@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/Program Files/**)",
+      "Read(//c/Users/bozo/AppData/Roaming/**)",
+      "Read(//c/Users/bozo/**)",
+      "Read(//c/Users/bozo/AppData/**)",
+      "Bash(cmd.exe /c \"where npm\")",
+      "Bash(cmd.exe /c \"where node\")",
+      "Bash(powershell.exe -Command \"Get-Command npm -ErrorAction SilentlyContinue | Select-Object -ExpandProperty Source\")",
+      "Bash(powershell.exe -Command \"Get-Command node,npm -ErrorAction SilentlyContinue | Format-Table Name,Source\")",
+      "Bash(powershell.exe -NoProfile -Command \"Get-ChildItem 'C:\\\\Program Files\\\\' -Filter 'node*' -ErrorAction SilentlyContinue | Select Name; Get-ChildItem 'C:\\\\Users\\\\bozo\\\\AppData\\\\*' -Filter 'node*' -Recurse -Depth 3 -ErrorAction SilentlyContinue | Select FullName | Select-Object -First 10\")",
+      "Bash(powershell.exe -NoProfile -Command \"Get-ChildItem 'C:\\\\Program Files\\\\nodejs\\\\' -ErrorAction SilentlyContinue | Select Name; Get-ChildItem 'C:\\\\Program Files \\(x86\\)\\\\nodejs\\\\' -ErrorAction SilentlyContinue | Select Name; Get-ChildItem 'C:\\\\Users\\\\bozo\\\\AppData\\\\Roaming\\\\nvm\\\\' -ErrorAction SilentlyContinue | Select Name; Test-Path 'C:\\\\Program Files\\\\nodejs\\\\npm.cmd'\")",
+      "Bash(export PATH=\"/c/Program Files/nodejs:$PATH\")",
+      "Bash(npm test:*)"
+    ]
+  }
+}
