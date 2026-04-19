@@ -32,13 +32,16 @@ sampler-app/
 │   │   ├── useSampler.js         # bridge between sampler.js and React state
 │   │   └── useKeyboard.js        # keydown/keyup → note trigger/release
 │   ├── modes/
-│   │   ├── FreePlay.jsx          # Keyboard + Controls + Spectrogram
-│   │   ├── Learn.jsx             # song select, key guide overlay, playback
-│   │   └── Explore.jsx           # shared songs feed, download, share form
+│   │   ├── PlayLayout.jsx        # shared base: Keyboard + Controls + Spectrogram; accepts optional topPanel prop
+│   │   ├── FreePlay.jsx          # renders PlayLayout with no topPanel
+│   │   └── Learn.jsx             # song selection view + learn play view (PlayLayout + song panel + help + playback)
 │   ├── songs/
-│   │   ├── furElise.js           # { note, duration } song data
-│   │   └── odeToJoy.js
-│   ├── App.jsx                   # mode switcher + nav
+│   │   ├── parseSong.js          # parses raw .txt song string into { key, duration } array
+│   │   ├── furElise.txt          # song data in <key><duration> token format
+│   │   ├── maryHadALittleLamb.txt
+│   │   ├── odeToJoy.txt
+│   │   └── twinkleTwinkleLittleStar.txt
+│   ├── App.jsx                   # mode switcher + nav (Free Play / Learn)
 │   └── main.jsx                  # app entry point
 ├── tests/
 │   ├── mocks/

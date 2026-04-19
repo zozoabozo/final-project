@@ -84,23 +84,34 @@
 ---
 
 ### Phase 6: Modes
-1. **`FreePlay.jsx`** — compose `Keyboard`, `Controls`, and `Spectrogram`
 
-2. **`Learn.jsx`**
-   - Song selection menu
-   - Sheet/key guide overlay on `Keyboard` showing next notes
-   - Playback engine that steps through the song data and triggers notes
-   - Play/pause/stop controls
+**Shared layout:** Extract a `PlayLayout.jsx` component that composes `Keyboard`, `Controls`, and `Spectrogram`. Both `FreePlay` and `Learn` (on its play screen) render `PlayLayout` — `Learn` simply slots the song panel above the keyboard inside that layout.
 
-3. **`Explore.jsx`**
-   - Display list of user-shared songs (mock data initially)
-   - Download clip button per entry
-   - Share form: upload `.mp3`/`.wav` + song metadata
+1. **`PlayLayout.jsx`** — shared base: `Keyboard` + `Controls` + `Spectrogram`. Accepts an optional `topPanel` prop rendered above the keyboard.
+
+2. **`FreePlay.jsx`** — renders `PlayLayout` with no `topPanel`. No other changes.
+
+3. **`Learn.jsx`** — two internal views managed by local state:
+
+   **Song Selection View:**
+   - Lists all `.txt` song files from `src/songs/` (imported statically via `?raw`)
+   - Each song entry shows:
+     - Song name
+     - **Play button** — plays the full song through using a built-in default audio sample (a short sine-wave tone or similar bundled asset; no user clip required). Toggles to a **Stop button** while playback is active. Stopping early halts playback immediately.
+     - **Learn button** — navigates to the Learn Play View for that song
+   - The built-in preview sample must be bundled with the app (e.g., placed in `public/assets/samples/`) so no upload is needed
+
+   **Learn Play View** (navigated to after clicking Learn on a song):
+   - Renders `PlayLayout` (identical to Free Play: full clip upload, clip manager, recorder, spectrogram, keyboard)
+   - Adds a **scrollable song panel** above the keyboard (via `PlayLayout`'s `topPanel` prop) displaying the raw `.txt` file content of the selected song. The panel has a fixed max-height so it doesn't dominate the screen; overflow scrolls vertically.
+   - Adds a **Help button** (e.g., a `?` button near the song panel header) that opens a modal or inline overlay explaining the token syntax (`<key><duration>`, base unit, valid keys, etc.)
+   - Adds a **Play Song button** near the song panel that triggers full playback of the song using the currently loaded user clip (same playback engine as the preview, but using the user's clip). Toggles to Stop while playing.
+   - Adds a **Back button** that returns to the Song Selection View
 
 ---
 
 ### Phase 7: App Shell
-1. **`App.jsx`** — mode switcher (Free Play / Learn / Explore) with nav
+1. **`App.jsx`** — mode switcher (Free Play / Learn) with nav; Explore is removed
 2. **`main.jsx`** — mount app, ensure `AudioContext` is not initialized before user gesture
 
 ---

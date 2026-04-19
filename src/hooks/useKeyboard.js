@@ -2,10 +2,10 @@ import { useEffect } from 'react'
 
 // Physical key → note mapping covering C3–C5.
 // Lower block (z row) = C3–B3, upper block (q row) = C4–C5.
-const KEY_MAP = {
+export const KEY_MAP = {
   // C3 octave — white keys on z row, black keys on a row
   z: 'C3', s: 'C#3', x: 'D3', d: 'D#3', c: 'E3',
-  v: 'F3', g: 'F#3', b: 'G3', h: 'G#3', n: 'A3',
+  v: 'F3', f: 'F3', g: 'F#3', b: 'G3', h: 'G#3', n: 'A3',
   j: 'A#3', m: 'B3',
   // C4 octave — white keys on q row, black keys on number row
   q: 'C4', 2: 'C#4', w: 'D4', 3: 'D#4', e: 'E4',

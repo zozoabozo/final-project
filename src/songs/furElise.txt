@@ -1,0 +1,13 @@
+u1 t1 u1 t1 u1 q1 y1 i1
+t1 q1 y1 i1 t1 q1 y1 i1
+
+u1 t1 u1 t1 u1 q1 y1 i1
+t1 q1 y1 i1 t1 q1 y1 i1
+
+i2 u2 t2 y2
+u2 t2 y2 u2
+t2 y2 u2 t2
+y2 u2 t2 y2
+
+u1 t1 u1 t1 u1 q1 y1 i1
+t1 q1 y1 i1 t1 q1 y1 i1

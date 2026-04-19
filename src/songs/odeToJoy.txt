@@ -1,0 +1,19 @@
+g2 g2 h2 j2
+j2 h2 g2 f2
+d2 d2 f2 g2
+g3 f1 f4
+
+g2 g2 h2 j2
+j2 h2 g2 f2
+d2 d2 f2 g2
+f3 d1 d4
+
+f2 f2 g2 d2
+f2 g1 h3 d2
+f2 g1 h3 g2
+d2 f2 g2 f2
+
+g2 g2 h2 j2
+j2 h2 g2 f2
+d2 d2 f2 g2
+f3 d1 d4
