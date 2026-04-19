@@ -15,7 +15,7 @@ import { semitoneToRate, noteToSemitone } from './pitchUtils.js'
 // The clip plays at rate 1.0 when this note is triggered.
 const BASE_NOTE = 'C4'
 
-export function createSampler(audioContext) {
+export function createSampler(audioContext, { onVoiceEnd } = {}) {
   let buffer = null
   const activeVoices = new Map() // note string → BufferSourceNode
 
@@ -56,7 +56,10 @@ export function createSampler(audioContext) {
       source.start()
 
       // Safety cleanup if the source ends for any reason other than release()
-      source.onended = () => activeVoices.delete(note)
+      source.onended = () => {
+        activeVoices.delete(note)
+        onVoiceEnd?.()
+      }
       activeVoices.set(note, source)
     },
 

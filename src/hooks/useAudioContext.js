@@ -1,8 +1,26 @@
-import { useRef, useCallback } from 'react'
+import { useState, useCallback, useEffect } from 'react'
 
-// TODO: implement in Phase 3
-// Singleton AudioContext initialized on first user gesture.
-// The AudioContext must NOT be created before a user interaction.
+let sharedContext = null
+const subscribers = new Set()
+
 export function useAudioContext() {
-  throw new Error('Not implemented')
+  const [audioContext, setAudioContext] = useState(sharedContext)
+
+  useEffect(() => {
+    if (sharedContext !== null) setAudioContext(sharedContext)
+    subscribers.add(setAudioContext)
+    return () => subscribers.delete(setAudioContext)
+  }, [])
+
+  const initAudioContext = useCallback(() => {
+    if (!sharedContext) {
+      sharedContext = new AudioContext()
+      subscribers.forEach((setter) => setter(sharedContext))
+    } else if (sharedContext.state === 'suspended') {
+      sharedContext.resume()
+    }
+    return sharedContext
+  }, [])
+
+  return { audioContext, initAudioContext }
 }

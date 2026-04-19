@@ -65,6 +65,8 @@
 5. **`Controls.jsx`**
    - Compose `ClipManager` and `Recorder` into a single control bar
 
+**Note — redundant `onVoiceEnd` on normal release:** `sampler.js` fires `onVoiceEnd` from `source.onended`, which the browser also dispatches when `source.stop()` is called during a normal `release()`. This means every deliberate release triggers `onVoiceEnd` in addition to the explicit `setActiveNotes` call already made by `useSampler.release`. The result is a second `setActiveNotes` call with an identical value — React bails out and no extra render occurs, so behavior is correct. No fix is needed, but be aware of this if profiling or debugging double-state-update warnings.
+
 ---
 
 ### Phase 5: Song Data

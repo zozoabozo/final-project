@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from 'vitest'
+import { describe, it, expect, beforeEach, vi } from 'vitest'
 import { createSampler } from '../src/audio/sampler.js'
 import { createMockAudioContext } from './mocks/audioContext.js'
 
@@ -94,5 +94,16 @@ describe('sampler', () => {
     expect(sampler.getActiveNotes()).toEqual(new Set(['E4']))
     sampler.release('E4')
     expect(sampler.getActiveNotes()).toEqual(new Set())
+  })
+
+  it('onVoiceEnd callback fires when source.onended triggers', () => {
+    const onVoiceEnd = vi.fn()
+    const ctx = createMockAudioContext()
+    const s = createSampler(ctx, { onVoiceEnd })
+    s.loadClip({ duration: 1, sampleRate: 44100, numberOfChannels: 1, length: 44100 })
+    s.trigger('C4')
+    const source = ctx.createBufferSource.mock.results[0].value
+    source.onended()
+    expect(onVoiceEnd).toHaveBeenCalledTimes(1)
   })
 })
