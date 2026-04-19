@@ -2,78 +2,84 @@
 
 ---
 
-### Phase 1: Project Setup
-1. Scaffold a Vite + React project
-2. Install dependencies: Tone.js (or Web Audio API), Vitest, Lamejs (MP3 export)
-3. Create the full directory structure as specified
-4. Configure Vitest with a jsdom environment
-5. Create `tests/mocks/audioContext.js` with a stubbed Web Audio API
+### ~~Phase 1: Project Setup~~
+1. ~~Scaffold a Vite + React project~~
+2. ~~Install dependencies: Tone.js (or Web Audio API), Vitest, Lamejs (MP3 export)~~
+3. ~~Create the full directory structure as specified~~
+4. ~~Configure Vitest with a jsdom environment~~
+5. ~~Create `tests/mocks/audioContext.js` with a stubbed Web Audio API~~
 
 ---
 
-### Phase 2: Audio Core
-1. **`pitchUtils.js`**
-   - Implement `semitoneToRate(n)` and `noteToSemitone(note)`
-   - Write and pass tests for both functions
+### ~~Phase 2: Audio Core~~
+1. ~~**`pitchUtils.js`**~~
+   - ~~Implement `semitoneToRate(n)` and `noteToSemitone(note)`~~
+   - ~~Write and pass tests for both functions~~
 
-2. **`clipBank.js`**
-   - Implement storage for up to 5 named clips
-   - Implement add, remove, and select methods
-   - Write and pass tests
+2. ~~**`clipBank.js`**~~
+   - ~~Implement storage for up to 5 named clips~~
+   - ~~Implement add, remove, and select methods~~
+   - ~~Write and pass tests~~
 
-3. **`sampler.js`**
-   - Implement `loadClip(audioBuffer)`
-   - Implement `trigger(note)` with correct playback rate via `pitchUtils`
-   - Implement `release(note)` with loop/hold behavior for held keys
-   - Support simultaneous voices (polyphony)
-   - Write and pass tests using the mock AudioContext
+3. ~~**`sampler.js`**~~
+   - ~~Implement `loadClip(audioBuffer)`~~
+   - ~~Implement `trigger(note)` with correct playback rate via `pitchUtils`~~
+   - ~~Implement `release(note)` with loop/hold behavior for held keys~~
+   - ~~Support simultaneous voices (polyphony)~~
+   - ~~Write and pass tests using the mock AudioContext~~
 
-4. **`recorder.js`**
-   - Implement `startRecording()` and `stopRecording()` using MediaRecorder
-   - Implement export to `.wav` and `.mp3`
-   - Write and pass tests
+4. ~~**`recorder.js`**~~
+   - ~~Implement `startRecording()` and `stopRecording()` using MediaRecorder~~
+   - ~~Implement export to `.wav` and `.mp3`~~
+   - ~~Write and pass tests~~
 
 ---
 
-### Phase 3: Hooks
-1. **`useAudioContext.js`** — singleton, initialized on first user gesture
-2. **`useSampler.js`** — connects `sampler.js` to React state
-3. **`useKeyboard.js`** — maps keydown/keyup events to note trigger/release, suppresses key repeat
+### ~~Phase 3: Hooks~~
+1. ~~**`useAudioContext.js`** — singleton, initialized on first user gesture~~
+2. ~~**`useSampler.js`** — connects `sampler.js` to React state~~
+3. ~~**`useKeyboard.js`** — maps keydown/keyup events to note trigger/release, suppresses key repeat~~
 
 ---
 
 ### Phase 4: Core UI Components
-1. **`Keyboard.jsx`**
-   - Render full chromatic keyboard (at minimum C3–C5)
-   - Handle mouse and keyboard input
-   - Visually highlight held keys
+1. ~~**`Keyboard.jsx`**~~
+   - ~~Render full chromatic keyboard (at minimum C3–C5)~~
+   - ~~Handle mouse and keyboard input~~
+   - ~~Visually highlight held keys~~
 
-2. **`Spectrogram.jsx`**
-   - Connect an `AnalyserNode` to the audio graph
-   - Render real-time frequency data to a canvas element
-   - Write a test asserting dominant frequency bin matches expected Hz ±5% after a note trigger
+2. ~~**`Spectrogram.jsx`**~~
+   - ~~Connect an `AnalyserNode` to the audio graph~~
+   - ~~Render real-time frequency data to a canvas element~~
+   - ~~Write a test asserting dominant frequency bin matches expected Hz ±5% after a note trigger~~
 
-3. **`ClipManager.jsx`**
-   - Upload audio file and pass to `clipBank.js`
-   - Display up to 5 saved clips with select and delete
+3. ~~**`ClipManager.jsx`**~~
+   - ~~Upload audio file and pass to `clipBank.js`~~
+   - ~~Display up to 5 saved clips with select and delete~~
 
-4. **`Recorder.jsx`**
-   - Start/stop recording controls
-   - Choose export format (`.wav` / `.mp3`)
-   - Trigger download on export
+4. ~~**`Recorder.jsx`**~~
+   - ~~Start/stop recording controls~~
+   - ~~Choose export format (`.wav` / `.mp3`)~~
+   - ~~Trigger download on export~~
 
-5. **`Controls.jsx`**
-   - Compose `ClipManager` and `Recorder` into a single control bar
+5. ~~**`Controls.jsx`**~~
+   - ~~Compose `ClipManager` and `Recorder` into a single control bar~~
 
 **Note — redundant `onVoiceEnd` on normal release:** `sampler.js` fires `onVoiceEnd` from `source.onended`, which the browser also dispatches when `source.stop()` is called during a normal `release()`. This means every deliberate release triggers `onVoiceEnd` in addition to the explicit `setActiveNotes` call already made by `useSampler.release`. The result is a second `setActiveNotes` call with an identical value — React bails out and no extra render occurs, so behavior is correct. No fix is needed, but be aware of this if profiling or debugging double-state-update warnings.
 
 ---
 
 ### Phase 5: Song Data
-1. Define a song data format: array of `{ note, duration }` objects
-2. Implement `furElise.js`
-3. Implement `odeToJoy.js`
-4. Write a validator test that checks all song files conform to the format
+1. Delete `src/songs/furElise.js` and `src/songs/odeToJoy.js` — replaced by `.txt` files
+2. **Song format:** plain `.txt` files in `src/songs/`. Each token is `<key><duration>` (e.g., `g2`, `h3`) where the key is a physical keyboard key matching `KEY_MAP` in `useKeyboard.js` and the duration is a positive integer multiplier of a fixed base unit (`BASE_DURATION_MS = 250`ms). Whitespace and empty lines are ignored.
+3. Load `.txt` files via Vite's `?raw` import (e.g., `import raw from './odeToJoy.txt?raw'`) — no runtime fetch needed
+4. **`src/songs/parseSong.js`** — implement and export `parseSong(raw)` which takes a raw `.txt` string and returns an array of `{ key, duration }` objects; invalid tokens are skipped with a console warning
+5. Write `tests/songs.test.js` — validator that:
+   - Imports each `.txt` file via `?raw` and runs `parseSong` on it
+   - Asserts every token matches the pattern `/^[a-zA-Z0-9]\d+$/`
+   - Asserts every key exists in `KEY_MAP`
+   - Asserts every duration is a positive integer
+6. The user (not the agent) creates and populates all `.txt` song files
 
 ---
 

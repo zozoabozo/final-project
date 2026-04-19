@@ -1,0 +1,60 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: #0f172a;
+  color: #e2e8f0;
+  font-family: system-ui, sans-serif;
+  min-height: 100vh;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.app__nav {
+  display: flex;
+  gap: 4px;
+  padding: 12px 24px;
+  background: #1e293b;
+  border-bottom: 1px solid #334155;
+}
+
+.app__nav-btn {
+  padding: 8px 20px;
+  background: transparent;
+  color: #94a3b8;
+  border: 1px solid transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: color 0.15s, background 0.15s;
+}
+
+.app__nav-btn:hover {
+  color: #e2e8f0;
+  background: #334155;
+}
+
+.app__nav-btn--active {
+  color: #93c5fd;
+  border-color: #3b82f6;
+  background: #1e3a5f;
+}
+
+.app__main {
+  flex: 1;
+}
+
+.app__placeholder {
+  padding: 48px;
+  text-align: center;
+  color: #475569;
+  font-size: 18px;
+}

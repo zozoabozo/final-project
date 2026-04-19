@@ -1,0 +1,6 @@
+.spectrogram {
+  display: block;
+  border-radius: 6px;
+  background: #0f172a;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}

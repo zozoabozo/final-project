@@ -4,22 +4,42 @@ import { createSampler } from '../audio/sampler.js'
 import { createRecorder } from '../audio/recorder.js'
 import { createClipBank } from '../audio/clipBank.js'
 
+function createSineBuffer(ctx) {
+  const duration = 2
+  const length = Math.floor(ctx.sampleRate * duration)
+  const buffer = ctx.createBuffer(1, length, ctx.sampleRate)
+  const data = buffer.getChannelData(0)
+  const freq = 261.63 // C4
+  for (let i = 0; i < length; i++) {
+    const t = i / ctx.sampleRate
+    const fadeStart = duration * 0.7
+    const amp = t > fadeStart ? 1 - (t - fadeStart) / (duration - fadeStart) : 1
+    data[i] = Math.sin(2 * Math.PI * freq * t) * amp * 0.4
+  }
+  return buffer
+}
+
 export function useSampler() {
   const { audioContext, initAudioContext } = useAudioContext()
   const samplerRef = useRef(null)
   const recorderRef = useRef(null)
   const clipBankRef = useRef(null)
+  const audioContextRef = useRef(null)
+  const currentClipNameRef = useRef(null)
   const [analyserNode, setAnalyserNode] = useState(null)
   const [activeNotes, setActiveNotes] = useState(new Set())
   const [clipSlots, setClipSlots] = useState(Array(5).fill(null))
   const [currentClipName, setCurrentClipName] = useState(null)
   const [isRecording, setIsRecording] = useState(false)
 
+  useEffect(() => { currentClipNameRef.current = currentClipName }, [currentClipName])
+
   // Wire the full audio graph once an AudioContext is available.
   // sampler.outputNode → analyser → destination
   // sampler.outputNode → recorder.inputNode
   useEffect(() => {
     if (!audioContext || samplerRef.current) return
+    audioContextRef.current = audioContext
 
     const onVoiceEnd = () => {
       if (samplerRef.current) setActiveNotes(samplerRef.current.getActiveNotes())
@@ -32,6 +52,8 @@ export function useSampler() {
     sampler.outputNode.connect(analyser)
     analyser.connect(audioContext.destination)
     sampler.outputNode.connect(recorder.inputNode)
+
+    sampler.loadClip(createSineBuffer(audioContext))
 
     samplerRef.current = sampler
     recorderRef.current = recorder
@@ -83,6 +105,9 @@ export function useSampler() {
     if (!clipBankRef.current) return false
     const removed = clipBankRef.current.remove(name)
     if (removed) {
+      if (currentClipNameRef.current === name && samplerRef.current && audioContextRef.current) {
+        samplerRef.current.loadClip(createSineBuffer(audioContextRef.current))
+      }
       setClipSlots(clipBankRef.current.getSlots())
       setCurrentClipName((prev) => (prev === name ? null : prev))
     }
@@ -90,10 +115,11 @@ export function useSampler() {
   }, [])
 
   const decodeAudioFile = useCallback(async (file) => {
-    if (!audioContext) return null
+    const ctx = initAudioContext()
+    if (!ctx) return null
     const arrayBuffer = await file.arrayBuffer()
-    return audioContext.decodeAudioData(arrayBuffer)
-  }, [audioContext])
+    return ctx.decodeAudioData(arrayBuffer)
+  }, [initAudioContext])
 
   const startRecording = useCallback(() => {
     recorderRef.current?.startRecording()

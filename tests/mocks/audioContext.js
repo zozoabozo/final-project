@@ -58,6 +58,13 @@ export function createMockAudioContext() {
     createGain: vi.fn(mockGainNode),
     createAnalyser: vi.fn(mockAnalyserNode),
     createMediaStreamDestination: vi.fn(() => mockStreamDestination),
+    createBuffer: vi.fn((channels, length, sampleRate) => ({
+      sampleRate,
+      length,
+      numberOfChannels: channels,
+      duration: length / sampleRate,
+      getChannelData: vi.fn(() => new Float32Array(length)),
+    })),
 
     decodeAudioData: vi.fn((_buffer) =>
       Promise.resolve({

@@ -72,7 +72,7 @@ describe('useSampler', () => {
   beforeEach(() => {
     vi.clearAllMocks()
     mockCtx = createMockAudioContext()
-    mockInitAudioContext = vi.fn()
+    mockInitAudioContext = vi.fn(() => mockCtx)
     mockSampler = makeMockSampler(mockCtx)
     mockRecorder = makeMockRecorder()
     mockClipBank = makeMockClipBank()
@@ -287,6 +287,7 @@ describe('useSampler', () => {
 
       it('selectClip does nothing for unknown clip name', async () => {
         const { result } = await setupReady()
+        mockSampler.loadClip.mockClear() // clear the default-buffer call from setup
         act(() => { result.current.selectClip('nonexistent') })
         expect(mockSampler.loadClip).not.toHaveBeenCalled()
         expect(result.current.currentClipName).toBeNull()
