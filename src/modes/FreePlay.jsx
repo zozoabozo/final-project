@@ -1,13 +1,23 @@
-import { useSampler } from '../hooks/useSampler'
 import PlayLayout from './PlayLayout'
+import dogGif from '../assets/dogdancinggif.gif'
 
-export default function FreePlay() {
+function DancingDog({ isPlaying }) {
+  return (
+    <div className="dancing-dog">
+      {isPlaying && (
+        <img src={dogGif} alt="dancing dog" className="dancing-dog__img" />
+      )}
+    </div>
+  )
+}
+
+export default function FreePlay({ sampler }) {
   const {
     trigger, release, activeNotes, initAudioContext,
     analyserNode, decodeAudioFile, addClip, selectClip, removeClip,
     clipSlots, currentClipName,
     startRecording, stopRecording, exportWav, exportMp3, isRecording,
-  } = useSampler()
+  } = sampler
 
   return (
     <PlayLayout
@@ -27,6 +37,7 @@ export default function FreePlay() {
       exportWav={exportWav}
       exportMp3={exportMp3}
       isRecording={isRecording}
+      bottomPanel={<DancingDog isPlaying={activeNotes.size > 0} />}
     />
   )
 }

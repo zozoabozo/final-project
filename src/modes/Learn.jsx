@@ -1,5 +1,4 @@
 import { useState, useRef, useCallback } from 'react'
-import { useSampler } from '../hooks/useSampler'
 import { KEY_MAP } from '../hooks/useKeyboard'
 import { parseSong } from '../songs/parseSong'
 import { playSong } from '../songs/playSong'
@@ -17,13 +16,13 @@ const SONGS = [
   { name: 'Twinkle Twinkle Little Star', raw: twinkleTwinkleLittleStarRaw },
 ]
 
-export default function Learn() {
+export default function Learn({ sampler }) {
   const {
     trigger, release, releaseAll, initAudioContext, activeNotes,
     analyserNode, decodeAudioFile, addClip, selectClip, removeClip,
     clipSlots, currentClipName,
     startRecording, stopRecording, exportWav, exportMp3, isRecording,
-  } = useSampler()
+  } = sampler
 
   const [view, setView] = useState('selection')
   const [selectedSong, setSelectedSong] = useState(null)

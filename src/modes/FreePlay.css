@@ -38,3 +38,14 @@
   font-size: 13px;
   color: #93c5fd;
 }
+
+.dancing-dog {
+  display: flex;
+  justify-content: center;
+  padding: 8px 0 4px;
+}
+
+.dancing-dog__img {
+  max-height: 200px;
+  border-radius: 8px;
+}

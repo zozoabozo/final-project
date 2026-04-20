@@ -19,10 +19,24 @@ body {
 
 .app__nav {
   display: flex;
-  gap: 4px;
+  align-items: center;
+  gap: 16px;
   padding: 12px 24px;
   background: #1e293b;
   border-bottom: 1px solid #334155;
+}
+
+.app__title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #93c5fd;
+  letter-spacing: 0.04em;
+  margin-right: auto;
+}
+
+.app__nav-btns {
+  display: flex;
+  gap: 4px;
 }
 
 .app__nav-btn {

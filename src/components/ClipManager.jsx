@@ -1,5 +1,8 @@
 import { useRef, useState } from 'react'
+import AudioCropper from './AudioCropper'
 import './ClipManager.css'
+
+const CROPPER_THRESHOLD = 1.0  // files longer than this require cropping
 
 export default function ClipManager({
   clipSlots,
@@ -13,10 +16,30 @@ export default function ClipManager({
   const [error, setError] = useState(null)
   const [loading, setLoading] = useState(false)
   const [pendingRemove, setPendingRemove] = useState(null)
+  const [cropperState, setCropperState] = useState(null) // { buffer, name } | null
   const fileInputRef = useRef(null)
 
   const usedCount = clipSlots.filter(Boolean).length
   const isFull = usedCount === 5
+
+  function commitClip(name, buffer) {
+    const added = addClip(name, buffer)
+    if (!added) {
+      setError(`"${name}" already exists or all slots are full.`)
+      return
+    }
+    selectClip(name)
+  }
+
+  function handleCropConfirm(croppedBuffer) {
+    const { name } = cropperState
+    setCropperState(null)
+    commitClip(name, croppedBuffer)
+  }
+
+  function handleCropCancel() {
+    setCropperState(null)
+  }
 
   async function handleFileChange(e) {
     const file = e.target.files[0]
@@ -32,18 +55,26 @@ export default function ClipManager({
         return
       }
       const name = file.name.replace(/\.[^.]+$/, '')
-      const added = addClip(name, buffer)
-      if (!added) {
-        setError(`"${name}" already exists or all slots are full.`)
-        return
+      if (buffer.duration > CROPPER_THRESHOLD) {
+        setCropperState({ buffer, name })
+      } else {
+        commitClip(name, buffer)
       }
-      selectClip(name)
     } finally {
       setLoading(false)
     }
   }
 
   return (
+    <>
+    {cropperState && (
+      <AudioCropper
+        audioBuffer={cropperState.buffer}
+        initAudioContext={initAudioContext}
+        onConfirm={handleCropConfirm}
+        onCancel={handleCropCancel}
+      />
+    )}
     <div className="clip-manager">
       <div className="clip-manager__header">
         <span className="clip-manager__title">
@@ -122,5 +153,6 @@ export default function ClipManager({
         })}
       </ul>
     </div>
+    </>
   )
 }

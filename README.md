@@ -1,5 +1,48 @@
-# Vibe Coding Final Project
+# Vibe Coding Final Project - super sound samplr
 ## CS 3960 HW 5 | Zoe Linn
+
+### super sound samplr overview
+
+#### What is this project?
+
+super sound samplr is a browser-based sampler instrument. You upload any short audio clip — a dog bark, a voice recording, a sound effect, anything — and the app maps it across a full chromatic keyboard, letting you play it at any pitch. Press multiple keys at once for chords, hold keys to sustain notes, and record your session to download as a `.wav` or `.mp3`. There is also a Learn mode that lets you preview and follow along with built-in songs using your own uploaded sounds. To see what this looks like in action, click here (embedded video here).
+
+#### How to boot up the application
+
+1. Make sure you have [Node.js](https://nodejs.org/) installed (v18 or later recommended).
+2. Clone or download this repository.
+3. In your terminal, navigate to the project folder and install dependencies:
+   ```
+   npm install
+   ```
+4. Start the development server:
+   ```
+   npm run dev
+   ```
+5. Open the local URL shown in the terminal (e.g. `http://localhost:5173`) in your browser. Click anywhere on the page first — browsers require a user gesture before audio can play.
+
+#### How to use the application
+
+**Free Play mode**
+- Click **+ Upload** in the Clips panel to load an audio file. Files longer than 1 second will open a cropping tool — drag the handles to select the portion you want, then click Confirm.
+- Up to 5 clips can be saved at once. Click a clip name to make it the active sound; click × to remove it.
+- Play notes using your keyboard (see the on-screen keyboard for key mappings) or click the keys directly with your mouse. Keys can be held and played simultaneously.
+- Use the **Record** button to capture your session, then export it as `.wav` or `.mp3`.
+
+**Learn mode**
+- Browse the list of built-in songs. Hit **Play** to preview a song using a default tone, or **Learn** to open the song in the play view.
+- In the Learn play view, the song's note tokens are displayed in a scrollable panel. Load your own clip and use the **Play Song** button to hear the song played with your sound. Hit **?** for a guide to the token syntax.
+- The Back button returns you to the song list. Your loaded clips carry over between Free Play and Learn.
+
+#### Special features
+
+- **Audio cropping tool** — Any clip longer than 1 second opens an interactive cropper with a waveform visualization. Drag the start and end handles to select exactly the part you want (0.5–1.0 seconds). Preview your selection before confirming.
+- **Polyphony** — Multiple notes (up to two) can play simultaneously. Every key press is its own independent voice, so chords and overlapping notes work naturally.
+- **Clip bank** — Save up to 5 different sounds in a session and switch between them on the fly. Clips persist across Free Play and Learn mode.
+- **Real-time spectrogram** — A live frequency visualizer reacts to every note you play.
+- **Dancing dog** — ???
+
+---
 
 ### Week 13
 

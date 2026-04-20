@@ -21,6 +21,7 @@ export default function PlayLayout({
   exportMp3,
   isRecording,
   topPanel,
+  bottomPanel,
 }) {
   return (
     <div className="freeplay">
@@ -46,6 +47,7 @@ export default function PlayLayout({
         exportMp3={exportMp3}
         isRecording={isRecording}
       />
+      {bottomPanel}
     </div>
   )
 }
