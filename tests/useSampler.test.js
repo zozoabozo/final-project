@@ -180,6 +180,25 @@ describe('useSampler', () => {
       expect(result.current.activeNotes.size).toBe(0)
     })
 
+    it('releaseAll captured before triggers still releases notes triggered later', async () => {
+      // Regression: old releaseAll closed over stale activeNotes state and would
+      // see an empty set when called from a cancel closure created before playback.
+      const { result } = await setupReady()
+
+      // Capture releaseAll before any notes are triggered (simulates the cancel
+      // closure that startSongPlayback creates at the start of a song)
+      const capturedReleaseAll = result.current.releaseAll
+
+      act(() => { result.current.trigger('C4') })
+      act(() => { result.current.trigger('E4') })
+
+      // The captured reference must still release both notes
+      act(() => { capturedReleaseAll() })
+      expect(mockSampler.release).toHaveBeenCalledWith('C4')
+      expect(mockSampler.release).toHaveBeenCalledWith('E4')
+      expect(result.current.activeNotes.size).toBe(0)
+    })
+
     it('onVoiceEnd callback syncs activeNotes when a voice ends unexpectedly', async () => {
       const { result } = await setupReady()
       act(() => { result.current.trigger('C4') })

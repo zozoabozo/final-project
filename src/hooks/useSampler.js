@@ -76,14 +76,14 @@ export function useSampler() {
 
   const releaseAll = useCallback(() => {
     if (!samplerRef.current) return
-    for (const note of activeNotes) {
+    for (const note of samplerRef.current.getActiveNotes()) {
       samplerRef.current.release(note)
     }
     setActiveNotes(new Set())
-  }, [activeNotes])
+  }, [])
 
-  const loadClip = useCallback((audioBuffer) => {
-    samplerRef.current?.loadClip(audioBuffer)
+  const loadClip = useCallback(async (audioBuffer) => {
+    await samplerRef.current?.loadClip(audioBuffer)
   }, [])
 
   const addClip = useCallback((name, buffer) => {
@@ -93,11 +93,11 @@ export function useSampler() {
     return added
   }, [])
 
-  const selectClip = useCallback((name) => {
+  const selectClip = useCallback(async (name) => {
     if (!clipBankRef.current || !samplerRef.current) return
     const buffer = clipBankRef.current.select(name)
     if (!buffer) return
-    samplerRef.current.loadClip(buffer)
+    await samplerRef.current.loadClip(buffer)
     setCurrentClipName(name)
   }, [])
 

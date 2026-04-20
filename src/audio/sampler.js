@@ -15,8 +15,26 @@ import { semitoneToRate, noteToSemitone } from './pitchUtils.js'
 // The clip plays at rate 1.0 when this note is triggered.
 const BASE_NOTE = 'C4'
 
+// Semitone range to pre-render (covers C3–C5 keyboard range relative to C4 base).
+const SEMITONE_RANGE = Array.from({ length: 25 }, (_, i) => i - 12)
+
+// Pre-render the buffer pitched to `rate` using an OfflineAudioContext.
+// The rendered buffer has the same duration as the original so all notes
+// loop at the same wall-clock speed.
+async function preRenderAtRate(sampleRate, numberOfChannels, length, originalBuffer, rate) {
+  const offlineCtx = new OfflineAudioContext(numberOfChannels, length, sampleRate)
+  const src = offlineCtx.createBufferSource()
+  src.buffer = originalBuffer
+  src.playbackRate.value = rate
+  src.loop = true // wrap content to fill the full duration when rate > 1
+  src.connect(offlineCtx.destination)
+  src.start(0)
+  return offlineCtx.startRendering()
+}
+
 export function createSampler(audioContext, { onVoiceEnd } = {}) {
   let buffer = null
+  let preRenderedBuffers = new Map() // semitone offset → pre-rendered AudioBuffer
   const activeVoices = new Map() // note string → BufferSourceNode
 
   // All voices route through this node so downstream processors
@@ -31,11 +49,23 @@ export function createSampler(audioContext, { onVoiceEnd } = {}) {
     outputNode,
 
     /**
-     * Store the decoded AudioBuffer that will be pitched and played.
+     * Store the decoded AudioBuffer and pre-render a pitch-shifted variant for
+     * every semitone in SEMITONE_RANGE. Returns a Promise that resolves when all
+     * variants are ready; triggers fall back to rate-changed playback until then.
      * @param {AudioBuffer} audioBuffer
+     * @returns {Promise<void>}
      */
-    loadClip(audioBuffer) {
+    async loadClip(audioBuffer) {
       buffer = audioBuffer
+      preRenderedBuffers = new Map()
+      const { numberOfChannels, length, sampleRate } = audioBuffer
+      await Promise.all(
+        SEMITONE_RANGE.map(async (s) => {
+          const rate = semitoneToRate(s)
+          const rendered = await preRenderAtRate(sampleRate, numberOfChannels, length, audioBuffer, rate)
+          preRenderedBuffers.set(s, rendered)
+        })
+      )
     },
 
     /**
@@ -49,8 +79,18 @@ export function createSampler(audioContext, { onVoiceEnd } = {}) {
 
       const semitones = noteToSemitone(note) - noteToSemitone(BASE_NOTE)
       const source = audioContext.createBufferSource()
-      source.buffer = buffer
-      source.playbackRate.value = semitoneToRate(semitones)
+
+      // Use the pre-rendered buffer (same duration, different pitch) so the clip
+      // plays at the same speed on every key. Falls back to rate-changed playback
+      // while pre-rendering is still in progress.
+      const preRendered = preRenderedBuffers.get(semitones)
+      if (preRendered) {
+        source.buffer = preRendered
+        source.playbackRate.value = 1.0
+      } else {
+        source.buffer = buffer
+        source.playbackRate.value = semitoneToRate(semitones)
+      }
       source.loop = true // sustain pitch while key is held
       source.connect(outputNode)
       source.start()
@@ -71,8 +111,10 @@ export function createSampler(audioContext, { onVoiceEnd } = {}) {
     release(note) {
       const source = activeVoices.get(note)
       if (!source) return
-      source.stop()
       activeVoices.delete(note)
+      try { source.stop() } catch (_) {
+        // InvalidStateError: source already stopped or context suspended
+      }
     },
 
     /**

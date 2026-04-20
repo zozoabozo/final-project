@@ -1,0 +1,8 @@
+e2 w2 q2 w2
+e2 e2 e4
+w2 w2 w4
+e2 t2 t4
+e2 w2 q2 w2
+e2 e2 e2 e2
+w2 w2 e2 w2
+q8

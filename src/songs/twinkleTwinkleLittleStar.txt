@@ -1,0 +1,6 @@
+q2 q2 t2 t2 y2 y2 t4
+r2 r2 e2 e2 w2 w2 q4
+t2 t2 r2 r2 e2 e2 w4
+t2 t2 r2 r2 e2 e2 w4
+q2 q2 t2 t2 y2 y2 t4
+r2 r2 e2 e2 w2 w2 q4

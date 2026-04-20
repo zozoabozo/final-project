@@ -1,19 +1,8 @@
-g2 g2 h2 j2
-j2 h2 g2 f2
-d2 d2 f2 g2
-g3 f1 f4
-
-g2 g2 h2 j2
-j2 h2 g2 f2
-d2 d2 f2 g2
-f3 d1 d4
-
-f2 f2 g2 d2
-f2 g1 h3 d2
-f2 g1 h3 g2
-d2 f2 g2 f2
-
-g2 g2 h2 j2
-j2 h2 g2 f2
-d2 d2 f2 g2
-f3 d1 d4
+e2 e2 r2 t2
+t2 r2 e2 w2
+q2 q2 w2 e2
+e3 w1 w4
+e2 e2 r2 t2
+t2 r2 e2 w2
+q2 q2 w2 e2
+w3 q1 q4

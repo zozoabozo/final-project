@@ -1,8 +1,5 @@
 import { useSampler } from '../hooks/useSampler'
-import Keyboard from '../components/Keyboard'
-import Spectrogram from '../components/Spectrogram'
-import Controls from '../components/Controls'
-import './FreePlay.css'
+import PlayLayout from './PlayLayout'
 
 export default function FreePlay() {
   const {
@@ -13,28 +10,23 @@ export default function FreePlay() {
   } = useSampler()
 
   return (
-    <div className="freeplay">
-      <Spectrogram analyserNode={analyserNode} width={600} height={150} />
-      <Keyboard
-        trigger={trigger}
-        release={release}
-        activeNotes={activeNotes}
-        initAudioContext={initAudioContext}
-      />
-      <Controls
-        clipSlots={clipSlots}
-        currentClipName={currentClipName}
-        selectClip={selectClip}
-        removeClip={removeClip}
-        addClip={addClip}
-        decodeAudioFile={decodeAudioFile}
-        initAudioContext={initAudioContext}
-        startRecording={startRecording}
-        stopRecording={stopRecording}
-        exportWav={exportWav}
-        exportMp3={exportMp3}
-        isRecording={isRecording}
-      />
-    </div>
+    <PlayLayout
+      trigger={trigger}
+      release={release}
+      activeNotes={activeNotes}
+      initAudioContext={initAudioContext}
+      analyserNode={analyserNode}
+      decodeAudioFile={decodeAudioFile}
+      addClip={addClip}
+      selectClip={selectClip}
+      removeClip={removeClip}
+      clipSlots={clipSlots}
+      currentClipName={currentClipName}
+      startRecording={startRecording}
+      stopRecording={stopRecording}
+      exportWav={exportWav}
+      exportMp3={exportMp3}
+      isRecording={isRecording}
+    />
   )
 }
