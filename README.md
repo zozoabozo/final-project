@@ -6,6 +6,7 @@
 #### What is this project?
 
 super sound samplr is a browser-based sampler instrument. You upload any short audio clip — a dog bark, a voice recording, a sound effect, anything — and the app maps it across a full chromatic keyboard, letting you play it at any pitch. Press multiple keys at once for chords, hold keys to sustain notes, and record your session to download as a `.wav` or `.mp3`. There is also a Learn mode that lets you preview and follow along with built-in songs using your own uploaded sounds. To see what this looks like in action, follow this link --> https://youtu.be/iK0FWzlodVg.
+NOTE: unfortunately you can't hear the sounds *sad face* in the video. Follow this link --> https://youtu.be/aTU_QekLKAQ to see the entire application in action.
 
 #### How to boot up the application
 
