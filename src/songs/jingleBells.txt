@@ -1,0 +1,8 @@
+e2 e2 e4
+e2 e2 e4
+e2 t2 q3 w1
+e8
+r2 r2 r3 r1
+r2 e2 e2 e1 e1
+e2 w2 w2 e2
+w4 t4

@@ -7,6 +7,12 @@ import furEliseRaw from '../songs/furElise.txt?raw'
 import odeToJoyRaw from '../songs/odeToJoy.txt?raw'
 import maryHadALittleLambRaw from '../songs/maryHadALittleLamb.txt?raw'
 import twinkleTwinkleLittleStarRaw from '../songs/twinkleTwinkleLittleStar.txt?raw'
+import happyBirthdayRaw from '../songs/happyBirthday.txt?raw'
+import jingleBellsRaw from '../songs/jingleBells.txt?raw'
+import sevenNationArmyRaw from '../songs/sevenNationArmy.txt?raw'
+import youAreMySunshineRaw from '../songs/youAreMySunshine.txt?raw'
+import symphonyNo5Raw from '../songs/symphonyNo5.txt?raw'
+import rowYourBoatRaw from '../songs/rowYourBoat.txt?raw'
 import './Learn.css'
 
 const SONGS = [
@@ -14,6 +20,12 @@ const SONGS = [
   { name: 'Ode to Joy', raw: odeToJoyRaw },
   { name: 'Mary Had a Little Lamb', raw: maryHadALittleLambRaw },
   { name: 'Twinkle Twinkle Little Star', raw: twinkleTwinkleLittleStarRaw },
+  { name: 'Happy Birthday', raw: happyBirthdayRaw },
+  { name: 'Jingle Bells', raw: jingleBellsRaw },
+  { name: 'Seven Nation Army', raw: sevenNationArmyRaw },
+  { name: 'You Are My Sunshine', raw: youAreMySunshineRaw },
+  { name: 'Symphony No. 5', raw: symphonyNo5Raw },
+  { name: 'Row Your Boat', raw: rowYourBoatRaw },
 ]
 
 export default function Learn({ sampler }) {

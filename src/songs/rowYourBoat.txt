@@ -1,0 +1,4 @@
+q3 q3 q2 w1 e3
+e2 w1 e2 r1 t3
+i1 i1 i1 t1 t1 t1 e1 e1 e1 q1 q1 q1
+t2 r1 e2 w1 q3

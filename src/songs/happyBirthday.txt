@@ -1,0 +1,4 @@
+q1 q1 w2 q2 r2 e4
+q1 q1 w2 q2 t2 r4
+q1 q1 i2 y2 r2 e2 w2
+71 71 y2 r2 t2 r4

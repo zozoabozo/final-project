@@ -1,0 +1,6 @@
+b2 q2 w2 e2
+e2 e2 w2 e2
+q2 q4
+q2 w2 e2 r2
+y2 y2 t2 r2
+e8
