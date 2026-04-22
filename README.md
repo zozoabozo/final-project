@@ -44,6 +44,9 @@ NOTE: unfortunately you can't hear the sounds *sad face* in the video. Follow th
 - **Real-time spectrogram** — A live frequency visualizer reacts to every note you play.
 - **Dancing dog** — ???
 
+#### Deviation from Proposal
+This project deviates from my proposal in, honestly, not that many ways. A lot of what I planned worked out besides getting the clips to hold rather than repeat when keys are held. 
+
 ---
 
 ### Week 13
